@@ -10,7 +10,7 @@ resource "google_container_node_pool" "primary_nodes" {
   name       = "nexus-node-pool"
   location   = "asia-southeast1-a"
   cluster    = google_container_cluster.primary.name
-  node_count = 1
+  node_count = 3
   lifecycle {
     ignore_changes = [
       node_config[0].resource_labels,
@@ -26,3 +26,4 @@ resource "google_container_node_pool" "primary_nodes" {
     ]
   }
 }
+

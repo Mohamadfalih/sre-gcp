@@ -1,0 +1,30 @@
+resource "google_container_cluster" "nexus" {
+  name     = "nexus-cluster"
+  location = "asia-southeast2"
+
+  remove_default_node_pool = true
+  initial_node_count       = 1
+
+  deletion_protection= yes
+  network    = google_compute_network.nexus.id
+  subnetwork = google_compute_subnetwork.nexus.id
+}
+
+resource "google_container_node_pool" "primary" {
+  name     = "primary"
+  cluster  = google_container_cluster.nexus.name
+  location = "asia-southeast2"
+
+  node_count = 1
+
+  node_config {
+    preemptible  = true
+    machine_type = "n1-standard-1"
+
+    disk_type    = "pd-standard"
+    disk_size_gb = 20
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+}
